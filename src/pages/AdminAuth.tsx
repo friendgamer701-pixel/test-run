@@ -86,7 +86,7 @@ const AdminAuth = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@civiclink.com"
+                placeholder="admin@CiviLink.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}

@@ -35,8 +35,8 @@ export const Header = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="text-2xl font-bold text-primary flex items-center gap-2">
-              <MapPin className="w-6 h-6" />
-              CivicLink
+            <img src="public/logo.png" width="32" ></img>
+              CiviLink
             </Link>
             
             <nav className="hidden md:flex items-center space-x-8">

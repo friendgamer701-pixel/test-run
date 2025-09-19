@@ -13,7 +13,7 @@ export const AppDownload = () => {
           </div>
           
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Take CivicLink With You
+            Take CiviLink With You
           </h2>
           <p className="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto mb-12">
             Download the mobile app for the easiest way to report issues on the go. Available for iOS and Android devices.

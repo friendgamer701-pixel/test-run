@@ -27,7 +27,7 @@ export const Hero = () => {
             </span>
           </h1>
           <p className="text-lg md:text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto mb-8 animate-slide-up">
-            See a pothole, a broken streetlight, or an overflowing bin? Report it in seconds with CivicLink and help make your city a better place.
+            See a pothole, a broken streetlight, or an overflowing bin? Report it in seconds with CiviLink and help make your city a better place.
           </p>
           <div className="flex justify-center items-center gap-4 flex-wrap">
             <Button

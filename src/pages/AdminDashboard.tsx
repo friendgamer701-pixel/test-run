@@ -40,7 +40,7 @@ const AdminDashboardContent: React.FC = () => {
         <SidebarHeader>
           <div className="flex items-center gap-2">
             <Shield className="w-6 h-6 text-primary" />
-            <span className="text-lg font-semibold">CivicLink</span>
+            <span className="text-lg font-semibold">CiviLink</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -78,7 +78,7 @@ const AdminDashboardContent: React.FC = () => {
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Admin User</span>
-                  <span className="text-xs text-muted-foreground">admin@civiclink.com</span>
+                  <span className="text-xs text-muted-foreground">admin@CiviLink.com</span>
                 </div>
               </div>
             </DropdownMenuTrigger>
