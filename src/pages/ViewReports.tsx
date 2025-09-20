@@ -6,10 +6,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { MapPin, Calendar, Image, Search, TrendingUp, Filter, Eye } from "lucide-react";
+import { MapPin, Calendar, Image, Search, TrendingUp, Filter, Eye, Download } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { IssueUpvote } from "@/components/IssueUpvote";
 import { useToast } from "@/hooks/use-toast";
+import * as XLSX from 'xlsx';
 
 const ViewReports: React.FC = () => {
   const [reports, setReports] = useState<any[]>([]);
@@ -109,6 +110,45 @@ const ViewReports: React.FC = () => {
 
   const uniqueCategories = [...new Set(reports.map(r => r.category))];
 
+  const handleExport = () => {
+    if (filteredReports.length === 0) {
+      toast({
+        title: "No Data to Export",
+        description: "There are no reports matching the current filters.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const reportData = filteredReports.map(report => ({
+      ID: report.id,
+      Title: report.title,
+      Description: report.description,
+      Category: report.category,
+      Status: report.status,
+      "Created At": new Date(report.created_at).toLocaleString(),
+      Location: report.location_name,
+      Address: report.street_address,
+      Landmark: report.landmark,
+      Upvotes: report.upvotes_count || 0,
+      "Priority Score": report.priority_score || 0,
+      "Image URL": report.image_url,
+      "Public Notes": report.public_notes,
+      "Assigned To": report.assigned_to,
+      "Response Time": report.response_time,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(reportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Reports");
+    XLSX.writeFile(workbook, `community_reports_${new Date().toISOString().split('T')[0]}.xlsx`);
+
+    toast({
+      title: "Export Successful",
+      description: `${filteredReports.length} reports have been exported.`,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -138,8 +178,8 @@ const ViewReports: React.FC = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-5">
-            <div className="relative">
+          <div className="grid gap-4 md:grid-cols-6">
+            <div className="relative md:col-span-2">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search issues..."
@@ -184,7 +224,7 @@ const ViewReports: React.FC = () => {
                 <SelectItem value="oldest">Oldest First</SelectItem>
               </SelectContent>
             </Select>
-
+            <div className="flex gap-2">
             <Button 
               variant="outline" 
               onClick={() => {
@@ -194,8 +234,13 @@ const ViewReports: React.FC = () => {
                 setSortBy("newest");
               }}
             >
-              Clear Filters
+              Clear
             </Button>
+            <Button onClick={handleExport}>
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

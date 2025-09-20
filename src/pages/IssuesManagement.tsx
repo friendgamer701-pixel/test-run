@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from 'xlsx';
 import {
   Table,
   TableBody,
@@ -47,6 +48,7 @@ import {
   TrendingUp,
   Zap,
   Archive,
+  Download,
 } from "lucide-react";
 import {
   Dialog,
@@ -295,6 +297,18 @@ const IssuesManagement = () => {
     }
   };
 
+  const handleExport = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredIssues);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Issues");
+    XLSX.writeFile(workbook, "issues.xlsx");
+
+    toast({
+      title: "Export Successful",
+      description: `${filteredIssues.length} reports have been exported.`,
+    });
+  };
+
   const totalIssues = filteredIssues.length;
   const newIssues = filteredIssues.filter((i) => i.status === "new").length;
   const inProgressIssues = filteredIssues.filter((i) => i.status === "in_progress").length;
@@ -407,7 +421,7 @@ const IssuesManagement = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className=".tsx flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">In Progress</CardTitle>
               <Clock className="h-4 w-4 text-blue-600" />
             </CardHeader>
@@ -449,8 +463,8 @@ const IssuesManagement = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 md:grid-cols-6">
-              <div className="relative">
+            <div className="grid gap-4 md:grid-cols-7">
+              <div className="relative md:col-span-2">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search issues..."
@@ -506,6 +520,12 @@ const IssuesManagement = () => {
                 />
                 <label htmlFor="showSpam" className="text-sm">Show Spam</label>
               </div>
+              <div className="flex items-center gap-2">
+                <Button onClick={handleExport} size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+              
 
               <Button 
                 variant="outline" 
@@ -519,6 +539,7 @@ const IssuesManagement = () => {
               >
                 Clear Filters
               </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -528,8 +549,8 @@ const IssuesManagement = () => {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>All Issues ({filteredIssues.length})</span>
-              <div className="text-sm text-muted-foreground">
-                Showing {filteredIssues.length} of {issues.length} total issues
+                <div className="text-sm text-muted-foreground">
+                  Showing {filteredIssues.length} of {issues.length} total issues
               </div>
             </CardTitle>
             <CardDescription>Complete issue management with real-time updates</CardDescription>
